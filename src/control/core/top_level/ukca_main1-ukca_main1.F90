@@ -785,6 +785,10 @@ IF (l_first_call) THEN
     errcode = 0
 
     DO i=1,jpctr        ! to allow for case when jpctr < n_chem_tracers...
+      WRITE(umMessage,'(A,G0,A,A,G0)') 'advt ',i,advt(i),' c_species=',        &
+                      c_species(i)
+      CALL umPrint(umMessage,src=RoutineName)
+
       IF (c_species(i) < 0.001) THEN
         ! check that ratio of molec. wts. array has been initialised.
         errcode = errcode +1

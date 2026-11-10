@@ -571,7 +571,7 @@ IF (first) THEN
       d0(j) = d_h2o * SQRT(m_h2o / m_dhcarb9)
     CASE ('RU12NO3   ')
       d0(j) = d_h2o * SQRT(m_h2o / m_ru12no3)
-    CASE ('RU10NO3  ')
+    CASE ('RU10NO3   ')
       d0(j) = d_h2o * SQRT(m_h2o / m_ru10no3)
       ! RU12OOH happens to have same mass as default (150g/mol)
     CASE ('RU12OOH   ')

@@ -525,7 +525,7 @@ IF (mype == 0 .AND. printstatus >= prstatus_oper) THEN
   CALL umPrint(umMessage,src='asad_inrats')
   CALL umPrint('',src='asad_inrats')
   DO jcspf=1,ntrf
-    WRITE(umMessage,'(A,I2,A,A10)')'  ',jcspf,' ',specf(jcspf)
+    WRITE(umMessage,'(A,I4,A,A10)')'  ',jcspf,' ',specf(jcspf)
     CALL umPrint(umMessage,src='asad_inrats')
   END DO
   CALL umPrint('',src='asad_inrats')
