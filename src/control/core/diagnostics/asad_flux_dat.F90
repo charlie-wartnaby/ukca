@@ -9035,10 +9035,11 @@ IF (ukca_config%l_ukca_strattrop) THEN
   ALLOCATE(aa_oxidN_wetdep(SIZE(asad_oxidN_wetdep)))
   aa_oxidN_wetdep = asad_oxidN_wetdep
   ! aa_ch4_budget_loss
-  IF (ukca_config%l_ukca_emsdrvn_ch4) THEN
-    ALLOCATE(aa_ch4_budget_loss(SIZE(asad_atmos_ch4_budget_loss)))
-    aa_ch4_budget_loss = asad_atmos_ch4_budget_loss
-  END IF
+  ! CW: doing unconditionally for LS project
+  !IF (ukca_config%l_ukca_emsdrvn_ch4) THEN
+  ALLOCATE(aa_ch4_budget_loss(SIZE(asad_atmos_ch4_budget_loss)))
+  aa_ch4_budget_loss = asad_atmos_ch4_budget_loss
+  !END IF
   ! aa_ch4_drydep
   IF (ukca_config%l_ukca_emsdrvn_ch4) THEN
     ALLOCATE(aa_ch4_drydep(SIZE(asad_ch4_drydep)))
