@@ -698,32 +698,15 @@ ELSE IF (ukca_config%l_ukca_strat .OR. ukca_config%l_ukca_strattrop .OR.       &
 
   CALL ukca_chem_master
 
-  WRITE(umMessage,'(A)') 'Returned from ukca_chem_master()'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
-
   ! Copy the contents of the "new" arrays into the old ones. Slightly different
   ! structure for the reaction and chch types, hence a little clumsy. This can
   ! be simplified once we are ready to ditch the "old" reaction listings.
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE chch_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(chch_defs)) ALLOCATE(chch_defs(jpspec))
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE ratb_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(ratb_defs)) ALLOCATE(ratb_defs(jpbk))
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE rath_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(rath_defs)) ALLOCATE(rath_defs(jphk))
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE ratj_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(ratj_defs)) ALLOCATE(ratj_defs(jppj))
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE ratt_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(ratt_defs)) ALLOCATE(ratt_defs(jptk))
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE depvel_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(depvel_defs)) ALLOCATE(depvel_defs(jddept,jddepc,jpdd))
-  WRITE(umMessage,'(A)') 'Considering ALLOCATE henry_defs'
-  CALL umPrint(umMessage,src='ukca_chem1_dat')
   IF (.NOT. ALLOCATED(henry_defs)) ALLOCATE(henry_defs(6,jpdw))
 
   chch_defs(:)%item_no = chch_defs_new(:)%item_no
@@ -798,17 +781,9 @@ ELSE IF (ukca_config%l_ukca_strat .OR. ukca_config%l_ukca_strattrop .OR.       &
     ! Set number of constant species in aqueous phase.
     IF (nwet_constant > 0) THEN
       ! Allow for dissociation for constant species as well as tracers
-      WRITE(umMessage,'(A)') 'Considering ALLOCATE ct_k298'
-      CALL umPrint(umMessage,src='ukca_chem1_dat')      
       IF (.NOT. ALLOCATED(ct_k298))  ALLOCATE(ct_k298(nwet_constant))
-      WRITE(umMessage,'(A)') 'Considering ALLOCATE ct_dhr'
-      CALL umPrint(umMessage,src='ukca_chem1_dat')      
       IF (.NOT. ALLOCATED(ct_dhr))   ALLOCATE(ct_dhr(nwet_constant))
-      WRITE(umMessage,'(A)') 'Considering ALLOCATE ct_kd298'
-      CALL umPrint(umMessage,src='ukca_chem1_dat')      
       IF (.NOT. ALLOCATED(ct_kd298)) ALLOCATE(ct_kd298(nwet_constant,jpeq))
-      WRITE(umMessage,'(A)') 'Considering ALLOCATE ct_ddhr'
-      CALL umPrint(umMessage,src='ukca_chem1_dat')      
       IF (.NOT. ALLOCATED(ct_ddhr))  ALLOCATE(ct_ddhr(nwet_constant,jpeq))
     END IF
 
@@ -829,9 +804,6 @@ IF (ukca_config%l_ukca_chem_aero .AND. ukca_config%l_ukca_scale_soa_yield_isop &
     .AND. ukca_config%i_ukca_chem_version >= ichem_ver132) THEN
   CALL ukca_scale_soa_yield_isop
 END IF
-
-WRITE(umMessage,'(A)') 'About to return from ukca_chem1_init'
-CALL umPrint(umMessage,src='ukca_chem1_dat')    
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
 RETURN

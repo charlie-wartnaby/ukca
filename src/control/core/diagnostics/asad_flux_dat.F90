@@ -8888,34 +8888,23 @@ CHARACTER(LEN=errormessagelength) :: cmessage     ! error message
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 
-WRITE(umMessage,'(A)') 'Entered asad_load_default_fluxes'
-CALL umPrint(umMessage,src=RoutineName)    
-
 IF (ukca_config%l_ukca_strattrop) THEN
   ! Select the asad diagnostics appropriate for StratTrop chemistry and
   ! allocate the generic flux arrays according to the model configuration
   ! ===============================================================
 
     ! aa_trop_ox_budget_prod01
-WRITE(umMessage,'(A)') 'Allocating aa_trop_ox_budget_prod01'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_trop_ox_budget_prod01(SIZE(asad_trop_ox_budget_prod)))
   aa_trop_ox_budget_prod01 = asad_trop_ox_budget_prod
   ! aa_trop_ox_budget_loss01
   IF (ukca_config%i_ukca_chem_version >= ichem_version_132) THEN
-WRITE(umMessage,'(A)') 'Allocating aa_trop_ox_budget_loss01 >= 132'
-CALL umPrint(umMessage,src=RoutineName)    
     ALLOCATE(aa_trop_ox_budget_loss01(SIZE(asad_trop_ox_budget_loss01_132)))
     aa_trop_ox_budget_loss01 = asad_trop_ox_budget_loss01_132
   ELSE
-WRITE(umMessage,'(A)') 'Allocating aa_trop_ox_budget_loss01 < 132'
-CALL umPrint(umMessage,src=RoutineName)    
     ALLOCATE(aa_trop_ox_budget_loss01(SIZE(asad_trop_ox_budget_loss01)))
     aa_trop_ox_budget_loss01 = asad_trop_ox_budget_loss01
   END IF
   ! aa_trop_ox_budget_loss02
-WRITE(umMessage,'(A)') 'Allocating aa_trop_ox_budget_loss02'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%i_ukca_chem_version >= ichem_version_132) THEN
     ALLOCATE(aa_trop_ox_budget_loss02(SIZE(asad_trop_ox_budget_loss02_132)))
     aa_trop_ox_budget_loss02 = asad_trop_ox_budget_loss02_132
@@ -8924,19 +8913,12 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_trop_ox_budget_loss02 = asad_trop_ox_budget_loss02
   END IF
   ! aa_trop_ox_budget_drydep
-WRITE(umMessage,'(A)') 'Allocating aa_trop_ox_budget_drydep'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_trop_ox_budget_drydep(SIZE(asad_trop_ox_budget_drydep)))
   aa_trop_ox_budget_drydep = asad_trop_ox_budget_drydep
   ! aa_trop_ox_budget_wetdep
-WRITE(umMessage,'(A)') 'Allocating asad_trop_ox_budget_wetdep'
-CALL umPrint(umMessage,src=RoutineName)    
-  
   ALLOCATE(aa_trop_ox_budget_wetdep(SIZE(asad_trop_ox_budget_wetdep)))
   aa_trop_ox_budget_wetdep = asad_trop_ox_budget_wetdep
   ! aa_trop_other_fluxes
-WRITE(umMessage,'(A)') 'Allocating asad_trop_other_fluxes_132'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%i_ukca_chem_version >= ichem_version_132) THEN
     ALLOCATE(aa_trop_other_fluxes(SIZE(asad_trop_other_fluxes_132)))
     aa_trop_other_fluxes = asad_trop_other_fluxes_132
@@ -8945,18 +8927,12 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_trop_other_fluxes = asad_trop_other_fluxes
   END IF
   ! aa_general_interest
-WRITE(umMessage,'(A)') 'Allocating aa_general_interest'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_general_interest(SIZE(asad_general_interest)))
   aa_general_interest = asad_general_interest
   ! aa_o3s_loss
-WRITE(umMessage,'(A)') 'Allocating aa_o3s_loss (was aa_general_interest 2)'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_o3s_loss(SIZE(asad_o3s_loss)))
   aa_o3s_loss = asad_o3s_loss
   ! aa_trop_co_budget
-WRITE(umMessage,'(A)') 'Allocating aa_trop_co_budget'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_ro2_perm) THEN
     IF (ukca_config%i_ukca_chem_version >= ichem_version_121) THEN
       ALLOCATE(aa_trop_co_budget(SIZE(asad_ro2perm_trop_co_budget_121)))
@@ -8975,13 +8951,9 @@ CALL umPrint(umMessage,src=RoutineName)
     END IF
   END IF
   ! aa_lightning_diags
-WRITE(umMessage,'(A)') 'Allocating aa_lightning_diags'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_lightning_diags(SIZE(asad_lightning_diags)))
   aa_lightning_diags = asad_lightning_diags
   ! aa_strat_oh_prod
-WRITE(umMessage,'(A)') 'Allocating aa_strat_oh_prod'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%i_ukca_chem_version >= ichem_version_121) THEN
     ALLOCATE(aa_strat_oh_prod(SIZE(asad_strat_oh_prod_121)))
     aa_strat_oh_prod = asad_strat_oh_prod_121
@@ -8990,8 +8962,6 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_strat_oh_prod = asad_strat_oh_prod
   END IF
   ! aa_strat_oh_loss
-WRITE(umMessage,'(A)') 'Allocating aa_strat_oh_loss'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%i_ukca_chem_version >= ichem_version_121) THEN
     ALLOCATE(aa_strat_oh_loss(SIZE(asad_strat_oh_loss_121)))
     aa_strat_oh_loss = asad_strat_oh_loss_121
@@ -9000,8 +8970,6 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_strat_oh_loss = asad_strat_oh_loss
   END IF
   ! aa_strat_o3_budget
-WRITE(umMessage,'(A)') 'Allocating aa_strat_o3_budget'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_strat) THEN
     ALLOCATE(aa_strat_o3_budget(SIZE(asad_stratonly_o3_budget)))
     aa_strat_o3_budget = asad_stratonly_o3_budget
@@ -9010,13 +8978,9 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_strat_o3_budget = asad_strat_o3_budget
   END IF
   ! aa_strat_o3_misc
-WRITE(umMessage,'(A)') 'Allocating aa_strat_o3_misc'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_strat_o3_misc(SIZE(asad_strat_o3_misc)))
   aa_strat_o3_misc = asad_strat_o3_misc
   ! aa_aerosol_chem
-WRITE(umMessage,'(A)') 'Allocating aa_aerosol_chem'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_chem_aero) THEN
     IF (ukca_config%i_ukca_chem_version >= ichem_version_132) THEN
       ALLOCATE(aa_aerosol_chem(SIZE(asad_aerosol_chem_strattrop_132)))
@@ -9034,23 +8998,15 @@ CALL umPrint(umMessage,src=RoutineName)
     END IF
   END IF
   ! aa_rco2no2_pan_prod
-WRITE(umMessage,'(A)') 'Allocating aa_rco2no2_pan_prod'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_rco2no2_pan_prod(SIZE(asad_rco2no2_pan_prod)))
   aa_rco2no2_pan_prod = asad_rco2no2_pan_prod
   ! aa_ro2ho2_reacn
-WRITE(umMessage,'(A)') 'Allocating aa_ro2ho2_reacn'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_ro2ho2_reacn(SIZE(asad_ro2ho2_reacn)))
   aa_ro2ho2_reacn = asad_ro2ho2_reacn
   ! aa_ro2no3_reacn
-WRITE(umMessage,'(A)') 'Allocating aa_ro2no3_reacn'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_ro2no3_reacn(SIZE(asad_ro2no3_reacn)))
   aa_ro2no3_reacn = asad_ro2no3_reacn
   ! aa_ro2ro2_reacn
-WRITE(umMessage,'(A)') 'Allocating aa_ro2ro2_reacn'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_ro2_perm) THEN
     ALLOCATE(aa_ro2ro2_reacn(SIZE(asad_ro2perm_ro2ro2_reacn)))
     aa_ro2ro2_reacn = asad_ro2perm_ro2ro2_reacn
@@ -9059,18 +9015,12 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_ro2ro2_reacn = asad_ro2ro2_reacn
   END IF
   ! aa_ch4_oxidn
-WRITE(umMessage,'(A)') 'Allocating aa_ch4_oxidn'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_ch4_oxidn(SIZE(asad_ch4_oxidn)))
   aa_ch4_oxidn = asad_ch4_oxidn
   ! aa_o1d_prod
-WRITE(umMessage,'(A)') 'Allocating aa_o1d_prod'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_o1d_prod(SIZE(asad_o1d_prod)))
   aa_o1d_prod = asad_o1d_prod
   ! aa_h2o_budget
-WRITE(umMessage,'(A)') 'Allocating aa_h2o_budget'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%i_ukca_chem_version >= ichem_version_121) THEN
     ALLOCATE(aa_h2o_budget(SIZE(asad_h2o_budget_121)))
     aa_h2o_budget = asad_h2o_budget_121
@@ -9079,40 +9029,28 @@ CALL umPrint(umMessage,src=RoutineName)
     aa_h2o_budget = asad_h2o_budget
   END IF
   ! aa_oxidN_drydep
-WRITE(umMessage,'(A)') 'Allocating aa_oxidN_drydep'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_oxidN_drydep(SIZE(asad_oxidN_drydep)))
   aa_oxidN_drydep = asad_oxidN_drydep
   ! aa_oxidN_wetdep
-WRITE(umMessage,'(A)') 'Allocating aa_oxidN_wetdep'
-CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(aa_oxidN_wetdep(SIZE(asad_oxidN_wetdep)))
   aa_oxidN_wetdep = asad_oxidN_wetdep
   ! aa_ch4_budget_loss
-WRITE(umMessage,'(A)') 'Allocating aa_ch4_budget_loss'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_emsdrvn_ch4) THEN
     ALLOCATE(aa_ch4_budget_loss(SIZE(asad_atmos_ch4_budget_loss)))
     aa_ch4_budget_loss = asad_atmos_ch4_budget_loss
   END IF
   ! aa_ch4_drydep
-WRITE(umMessage,'(A)') 'Allocating aa_ch4_drydep'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_emsdrvn_ch4) THEN
     ALLOCATE(aa_ch4_drydep(SIZE(asad_ch4_drydep)))
     aa_ch4_drydep = asad_ch4_drydep
   END IF
   ! aa_ch4_ste
-WRITE(umMessage,'(A)') 'Allocating aa_ch4_ste'
-CALL umPrint(umMessage,src=RoutineName)    
   IF (ukca_config%l_ukca_emsdrvn_ch4) THEN
     ALLOCATE(aa_ch4_ste(SIZE(asad_ch4_ste)))
     aa_ch4_ste = asad_ch4_ste
   END IF
 
 ELSE IF (ukca_config%l_ukca_cristrat) THEN
-WRITE(umMessage,'(A)') 'ukca_config%l_ukca_cristrat'
-CALL umPrint(umMessage,src=RoutineName)    
   ! Select the asad diagnostics appropriate for CRI-Strat chemistry and
   ! allocate the generic flux arrays according to the model configuration
   ! ===============================================================
@@ -9398,9 +9336,6 @@ IF (ALLOCATED(aa_ch4_drydep))                                                  &
 IF (ALLOCATED(aa_ch4_ste))                                                     &
    n_chemical_fluxes = n_chemical_fluxes + SIZE(aa_ch4_ste)
 
-WRITE(umMessage,'(A)') 'Allocating asad_chemical_fluxes'
-CALL umPrint(umMessage,src=RoutineName)    
-
 ALLOCATE(asad_chemical_fluxes(n_chemical_fluxes))
 
 ! Initialise for checking
@@ -9600,9 +9535,6 @@ IF (printstatus > PrStatus_Normal) THEN
   END DO
 END IF
 
-WRITE(umMessage,'(A)') 'Deallocating generic arrays'
-CALL umPrint(umMessage,src=RoutineName) 
-
 ! Deallocate the generic arrays
 IF (ALLOCATED(aa_ch4_ste))               DEALLOCATE(aa_ch4_ste)
 IF (ALLOCATED(aa_ch4_drydep))            DEALLOCATE(aa_ch4_drydep)
@@ -9633,8 +9565,6 @@ IF (ALLOCATED(aa_trop_ox_budget_loss01)) DEALLOCATE(aa_trop_ox_budget_loss01)
 IF (ALLOCATED(aa_trop_ox_budget_prod02)) DEALLOCATE(aa_trop_ox_budget_prod02)
 IF (ALLOCATED(aa_trop_ox_budget_prod01)) DEALLOCATE(aa_trop_ox_budget_prod01)
 
-WRITE(umMessage,'(A)') 'About to leave asad_load_default_fluxes'
-CALL umPrint(umMessage,src=RoutineName) 
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
 
