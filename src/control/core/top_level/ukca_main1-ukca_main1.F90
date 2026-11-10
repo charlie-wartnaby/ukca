@@ -785,10 +785,6 @@ IF (l_first_call) THEN
     errcode = 0
 
     DO i=1,jpctr        ! to allow for case when jpctr < n_chem_tracers...
-      WRITE(umMessage,'(A,G0,A,A,G0)') 'advt ',i,advt(i),' c_species=',        &
-                      c_species(i)
-      CALL umPrint(umMessage,src=RoutineName)
-
       IF (c_species(i) < 0.001) THEN
         ! check that ratio of molec. wts. array has been initialised.
         errcode = errcode +1
@@ -2556,11 +2552,7 @@ IF (ukca_config%l_ukca_chem) THEN
   END IF ! do_chemistry
 
   ! Call routine to overwrite O3S with O3 in the stratosphere
-  WRITE(umMessage, '(A,I)') 'Considering ukca_strat_o3_tracer n_o3s=', n_o3s
-  CALL umPrint(umMessage,src=RoutineName)
   IF (n_o3s > 0) THEN
-    WRITE(umMessage, '(A,I)') 'Calling ukca_strat_o3_tracer n_o3s=', n_o3s
-    CALL umPrint(umMessage,src=RoutineName)
     CALL ukca_strat_o3_tracer(row_length, rows, model_levels, jpctr,           &
          all_tracers(1:row_length,1:rows,1:model_levels,1:jpctr))
   END IF

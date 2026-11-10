@@ -149,8 +149,6 @@ CONTAINS
 
 SUBROUTINE ukca_calc_cspecies
 
-USE umPrintMgr, ONLY: umMessage, umPrint
-
 USE ukca_constants,  ONLY: c_br, c_brcl, c_bro, c_brono2, c_buoo,              &
     c_buooh, c_c2h4, c_c2h6, c_c3h6, c_c3h8, c_c4h10, c_c5h8, c_ccl4,          &
     c_cf2cl2, c_cf2clbr, c_cf2clcfcl2, c_cf3br, c_cfcl3, c_ch2br2,             &
@@ -459,16 +457,7 @@ WHERE (advt == 'HMML      ') c_species = c_hmml
 WHERE (advt == 'DHPR12OOH ') c_species = c_dhpr12ooh
 WHERE (advt == 'DHCARB9   ') c_species = c_dhcarb9
 WHERE (advt == 'RU12NO3   ') c_species = c_ru12no3
-WRITE(umMessage,'(A,G0,A,G0)') 'Size advt=',SIZE(advt), &
-                          'size c_species=',SIZE(c_species)
-CALL umPrint(umMessage,src=RoutineName)
-WRITE(umMessage,'(A,G0)') 'About to write c_ru10no3=',c_ru10no3
-CALL umPrint(umMessage,src=RoutineName)
 WHERE (advt == 'RU10NO3   ') c_species = c_ru10no3
-WRITE(umMessage,'(A,G0,A)') 'advt(189)="',advt(189),'"'
-CALL umPrint(umMessage,src=RoutineName)
-WRITE(umMessage,'(A,G0)') 'c_species(189)=',c_species(189)
-CALL umPrint(umMessage,src=RoutineName)
 
 ! Mass for these species does not matter as not emitted or deposited
 ! Use default mass 150g/mole
@@ -620,11 +609,7 @@ DO m=1,jpctr
     n_ox1    = m
   CASE ('O3        ')
     n_o3     = m
-    WRITE(umMessage, '(A,I)') 'advt found O3 at', m
-    CALL umPrint(umMessage,src=RoutineName)
   CASE ('O3S       ')
-    WRITE(umMessage, '(A,I)') 'advt found O3S at', m
-    CALL umPrint(umMessage,src=RoutineName)
     n_o3s    = m
   CASE ('Sx        ')   ! stratospheric ozone tracer
     n_sx     = m
