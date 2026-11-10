@@ -78,7 +78,8 @@ CONTAINS
 SUBROUTINE asad_bimol( n_points )
 
 USE asad_mod,        ONLY: t, t300, specf, spb, ab, rk, tnd, p,                &
-                           wp, f, peps, nbrkx, jpspb, jpcspf, jpbk
+                           wp, f, peps, nbrkx, jpspb, jpcspf, jpbk,            &
+                           fn2, fo2, spj, jpspj, nprkx, jppj
 USE asad_findreaction_mod, ONLY: asad_findreaction
 USE ukca_config_specification_mod, ONLY: ukca_config
 
@@ -113,6 +114,14 @@ INTEGER, SAVE :: ics2oh = 0
 INTEGER, SAVE :: ih2o = 0
 INTEGER, SAVE :: iho2no = 0
 INTEGER, SAVE :: io3sn2 = 0
+INTEGER, SAVE :: io3oh = 0
+INTEGER, SAVE :: io3ho2 = 0
+INTEGER, SAVE :: io1dh2o = 0
+INTEGER, SAVE :: io1dn2 = 0
+INTEGER, SAVE :: io1do2 = 0
+INTEGER, SAVE :: ijo1d = 0
+INTEGER, SAVE :: ioh = 0
+INTEGER, SAVE :: iho2tr = 0
 INTEGER :: jtr
 INTEGER :: j
 INTEGER :: jr

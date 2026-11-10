@@ -103,11 +103,11 @@ INTEGER, PARAMETER :: rm = 1024   ! Used to remove reactions that existed at
                                   ! later ones
 
 ! Define size of master chemistry
-INTEGER, PARAMETER :: n_chch_master = 357 ! number of known species
+INTEGER, PARAMETER :: n_chch_master = 358 ! number of known species
 INTEGER, PARAMETER :: n_het_master  =  18 ! number of heterogeneous reactions
-INTEGER, PARAMETER :: n_dry_master  = 162 ! number of dry deposition reactions
+INTEGER, PARAMETER :: n_dry_master  = 163 ! number of dry deposition reactions
 INTEGER, PARAMETER :: n_wet_master  = 160 ! number of wet deposition reactions
-INTEGER, PARAMETER :: n_bimol_master = 1212 ! number of bimolecular reactions
+INTEGER, PARAMETER :: n_bimol_master = 1213 ! number of bimolecular reactions
 INTEGER, PARAMETER :: n_ratj_master = 183 ! number of photolysis reactions
 INTEGER, PARAMETER :: n_ratt_master = 116 ! number of termolecular reactions
 
@@ -174,7 +174,7 @@ IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 ! dry deposition flag, wet deposition flag, scheme,
 ! selection qualifier, deselection / disqualifier, (UM) version when entered
 ! into the master mechanism.
-chch_defs_master(1:149)=[                                                      &
+chch_defs_master(1:150)=[                                                      &
 !   1
 chch_t1( 1,'O(3P)     ',1,'TR        ','Ox        ',0,0,s+st+cs,0,0,107),      &
 !   1
@@ -499,7 +499,7 @@ chch_t1(92,'HO2S      ',1,'SS        ','          ',0,1,t,0,0,107)             &
 
 
 ! Species definitions continued
-chch_defs_master(150:244)=[                                                    &
+chch_defs_master(151:245)=[                                                    &
 !  93
 chch_t1(93,'s-BuOO    ',1,'SS        ','          ',0,0,r,0,0,107),            &
 !  94
@@ -694,7 +694,7 @@ chch_t1(181,'RU10OOH   ',1,'TR        ','          ',1,1,cs,0,0,107)           &
 ]
 
 
-chch_defs_master(245:n_chch_master)=[                                          &
+chch_defs_master(246:n_chch_master)=[                                          &
 ! 182 DD: 94,WD: 69,
 chch_t1(182,'NRU14OOH  ',1,'TR        ','          ',1,1,cs,0,0,107),          &
 ! 183 DD: 95,WD: 70,
@@ -4537,7 +4537,7 @@ ratb_t1(347,'O3S       ','N2        ','N2        ','          ','          ',  &
 ! Start and end bounds for 11th section of ratb_defs.
 ! If you add extra reactions to this section, increment n_ratb_e
 n_ratb_s = n_ratb_e+1
-n_ratb_e = n_ratb_s+96
+n_ratb_e = n_ratb_s+97
 ratb_defs_master(n_ratb_s:n_ratb_e) = [                                        &
 ! B347
 ratb_t1(347,'RA16O2    ','NO        ','CARB6     ','UDCARB8   ','HO2       ',  &
@@ -7261,7 +7261,7 @@ depvel_t(29,'EtCHO     ',& ! (as MeCHO)
   ti+t+st+cs,0,0,107) ]
 
 ! Split to avoid warning "Too many continuation lines"
-depvel_defs_master(30:59) = [                                                  &
+depvel_defs_master(30:60) = [                                                  &
 ! 30
 depvel_t(30,'MeCOCH2OOH',& !(as MeCO3H - where do the desert data come from!?)
 [0.36,  0.36,  0.36,  0.19,  0.19,  0.19,&   ! DD: 24.1
@@ -7516,7 +7516,7 @@ depvel_t(59,'BPINENE   ',                                                      &
   cs,0,0,107)                                                                  &
 ]
 
-depvel_defs_master(60:89) = [                                                  &
+depvel_defs_master(61:90) = [                                                  &
 !  60 EtOH  Using MeOH DD rates
 depvel_t(60,'EtOH      ',                                                      &
 [0.25,  0.25,  0.25,  0.10,  0.10,  0.10,&   ! DD: 52.1
@@ -7760,7 +7760,7 @@ depvel_t(89,'TNCARB10  ',                                                      &
 ]
 
 ! Dry deposition continued
-depvel_defs_master(90:122) = [                                                 &
+depvel_defs_master(91:123) = [                                                 &
 !  90 RA13NO3  Using ISON DD rates
 depvel_t(90,'RA13NO3   ',                                                      &
 [0.50,  0.50,  0.50,  0.25,  0.25,  0.25,&   ! DD:128.1
@@ -8028,7 +8028,7 @@ depvel_t(122,'RTN23OOH  ',                                                     &
 ]
 
 ! Dry deposition continued
-depvel_defs_master(123:150) = [                                                &
+depvel_defs_master(124:151) = [                                                &
 !  123 RTN14OOH  Using EtOOH DD rates
 depvel_t(123,'RTN14OOH  ',                                                     &
 [0.25,  0.25,  0.25,  0.10,  0.10,  0.10,&   ! DD:112.1
@@ -8255,7 +8255,7 @@ depvel_t(150,'AROH17    ',                                                     &
   cs,0,0,107)                                                                  &
   ]
 
-depvel_defs_master(151:n_dry_master) = [                                       &
+depvel_defs_master(152:n_dry_master) = [                                       &
 !  151 ARNOH17  Using MeOH DD rates
 depvel_t(151,'ARNOH17   ',                                                     &
 [0.25,  0.25,  0.25,  0.10,  0.10,  0.10,&   ! DD:140.1

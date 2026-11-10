@@ -170,7 +170,7 @@ USE asad_mod,               ONLY: nnaf, interval, advt, jpctr, jpspec, jpdd,   &
 
 USE ukca_tracer_vars,       ONLY: trmol_post_chem
 USE ukca_cspecies,          ONLY: c_species, c_na_species, n_bro, n_h2o,       &
-                                  n_hcl, n_no2, n_o3,                          &
+                                  n_hcl, n_no2, n_o3, n_o3s,                   &
                                   ukca_calc_cspecies, n_passive
 USE chemistry_constants_mod, ONLY: boltzmann, avogadro, rho_so4
 USE ukca_tropopause,        ONLY:                                              &

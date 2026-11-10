@@ -299,6 +299,7 @@ INTEGER, PARAMETER :: nss_o3p=2      !    "         "
 INTEGER, PARAMETER :: nss_n=3        !    "         "
 INTEGER, PARAMETER :: nss_h=4        !    "         "
 
+REAL    :: fn2,fo2
 REAL    :: cdt                       ! chemistry timestep
 REAL    :: peps                      !
 REAL, PARAMETER :: tslimit = 1200.0  ! timestep limit for some solvers
