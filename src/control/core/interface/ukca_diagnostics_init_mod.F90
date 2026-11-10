@@ -88,6 +88,10 @@ USE asad_flux_dat,                ONLY: asad_load_default_fluxes
 USE yomhook,  ONLY: lhook, dr_hook
 USE parkind1, ONLY: jprb, jpim
 
+USE umPrintMgr, ONLY:                                                          &
+    umPrint,                                                                   &
+    umMessage
+
 IMPLICIT NONE
 
 ! Subroutine arguments
@@ -128,6 +132,9 @@ IF (PRESENT(error_routine)) error_routine = ''
 
 ! Set up array bounds information for diagnostic groups
 
+WRITE(umMessage,'(A)') 'Setting up bounds in init_diagnostics'
+CALL umPrint(umMessage,src=RoutineName)    
+
 bound_info(dgroup_flat_real)%dim1_lower = 1
 bound_info(dgroup_flat_real)%dim1_upper = ukca_config%row_length
 bound_info(dgroup_flat_real)%dim2_lower = 1
@@ -143,8 +150,14 @@ bound_info(dgroup_fullht_real)%dim3_lower = 1
 bound_info(dgroup_fullht_real)%dim3_upper = ukca_config%model_levels
 
 ! Create the master diagnostics list
+WRITE(umMessage,'(A)') 'Calling create_master_diagnostics_list'
+CALL umPrint(umMessage,src=RoutineName)    
+
 CALL create_master_diagnostics_list(error_code_ptr, error_message,             &
                                     error_routine)
+
+WRITE(umMessage,'(A)') 'Back from create_master_diagnostics_list'
+CALL umPrint(umMessage,src=RoutineName)    
 
 IF (error_code_ptr <= 0) THEN
 
@@ -160,11 +173,16 @@ IF (error_code_ptr <= 0) THEN
     ukca_config%l_use_gridbox_volume .AND.                                     &
     (ukca_config%l_ukca_strattrop .OR. ukca_config%l_ukca_cristrat .OR.        &
      ukca_config%l_ukca_offline .OR. ukca_config%l_ukca_offline_be)
+WRITE(umMessage,'(A)') 'Possibly calling asad_load_default_fluxes'
+CALL umPrint(umMessage,src=RoutineName)    
 
   IF (ukca_config%l_asad_chem_diags_support) CALL asad_load_default_fluxes()
 
   ! Set availability of each diagnostic in the master diagnostics list given
   ! the UKCA configuration settings and count number of diagnostics available
+  WRITE(umMessage,'(A)') 'Calling set_diagnostic_availabilities'
+CALL umPrint(umMessage,src=RoutineName)    
+
   CALL set_diagnostic_availabilities(error_code_ptr, ukca_config, advt,        &
                                      n_available, error_message, error_routine)
 
@@ -173,9 +191,17 @@ END IF
 IF (error_code_ptr <= 0) THEN
 
   ! Create list of available diagnostics and supporting information
+  WRITE(umMessage,'(A)') 'Allocating available_diag_varnames'
+  CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(available_diag_varnames(n_available))
+  WRITE(umMessage,'(A)') 'Allocating available_diag_groups'
+  CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(available_diag_groups(n_available))
+  WRITE(umMessage,'(A)') 'Allocating l_available_diag_chem_timestep'
+  CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(l_available_diag_chem_timestep(n_available))
+  WRITE(umMessage,'(A)') 'Allocating available_diag_asad_ids'
+  CALL umPrint(umMessage,src=RoutineName)    
   ALLOCATE(available_diag_asad_ids(n_available))
   j = 0
   DO i = 1, SIZE(master_diag_list)
@@ -190,6 +216,9 @@ IF (error_code_ptr <= 0) THEN
 
 END IF
 
+WRITE(umMessage,'(A)') 'Leaving init_diagnostics'
+  CALL umPrint(umMessage,src=RoutineName)    
+  
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
 RETURN
 

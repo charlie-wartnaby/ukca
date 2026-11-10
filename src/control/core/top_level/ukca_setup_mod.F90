@@ -291,6 +291,10 @@ USE ukca_config_specification_mod, ONLY: init_ukca_configuration,              &
 
 USE ukca_um_legacy_mod, ONLY: l_dust, l_twobin_dust, l_um_infrastructure
 
+USE umPrintMgr, ONLY:                                                          &
+    umPrint,                                                                   &
+    umMessage
+
 USE ukca_constants, ONLY: l_ukca_diurnal_isopems
 USE ukca_init_mod, ONLY: ukca_init
 USE ukca_chem1_dat, ONLY: ukca_chem1_init
@@ -1378,9 +1382,18 @@ END IF
 ! Initialise chemical definition arrays
 CALL ukca_chem1_init()
 
+WRITE(umMessage,'(A)') 'Returned from ukca_chem1_init'
+CALL umPrint(umMessage,src=RoutineName)    
+
 ! Set up lists of tracer and non-transported prognostic species for chemistry
 CALL asad_mod_pre_setup_init()
+WRITE(umMessage,'(A)') 'Calling asad_inrats_set_sp_lists'
+CALL umPrint(umMessage,src=RoutineName)    
+
 CALL asad_inrats_set_sp_lists()
+
+WRITE(umMessage,'(A)') 'Got past asad_*'
+CALL umPrint(umMessage,src=RoutineName)    
 
 ! Determine which species are specified as 'constants' in the scheme and need
 ! values to be passed from the parent
@@ -1401,6 +1414,9 @@ IF ( ukca_config%l_chem_environ_gas_scalars ) THEN
   END DO
 END IF
 
+WRITE(umMessage,'(A)') 'Calling init_tracer_req'
+CALL umPrint(umMessage,src=RoutineName)    
+
 ! Specify tracer requirement based on details of the configuration
 CALL init_tracer_req( ukca_config,                                             &
                       advt, error_code,                                        &
@@ -1413,10 +1429,15 @@ END IF
 
 ! Set up structure holding all NTPs and specify NTP requirement
 ! based on details of the configuration
+WRITE(umMessage,'(A)') 'Calling ntp_init'
+CALL umPrint(umMessage,src=RoutineName)    
 CALL ntp_init()
 
 ! Set emitted species lists and various array sizes according to which
 ! chemistry scheme is selected
+WRITE(umMessage,'(A)') 'Calling ukca_set_config_defs'
+CALL umPrint(umMessage,src=RoutineName)    
+
 CALL ukca_set_config_defs()
 
 ! Set configuration details that depend on emissions settings
@@ -1434,6 +1455,9 @@ END IF
 ! Use parent supplied argument for return code. Note that this argument is
 ! redundant if UKCA is configured to abort on error and may be made optional
 ! in future, being replaced by an internal error code variable when absent.
+WRITE(umMessage,'(A)') 'Calling init_diagnostics'
+CALL umPrint(umMessage,src=RoutineName)    
+
 error_code_ptr => error_code
 CALL init_diagnostics(error_code_ptr, ukca_config, advt,                       &
                       error_message=error_message,                             &
@@ -1444,6 +1468,9 @@ IF (error_code_ptr > 0) THEN
 END IF
 
 ! Specify environment field requirement based on details of the configuration
+WRITE(umMessage,'(A)') 'Calling init_environment_req'
+CALL umPrint(umMessage,src=RoutineName)    
+
 CALL init_environment_req(ukca_config, glomap_config,                          &
                           speci, advt, lbc_spec, cfc_lumped, em_chem_spec,     &
                           ctype, error_code, error_message=error_message,      &
@@ -1454,10 +1481,16 @@ IF (error_code > 0) THEN
 END IF
 
 ! Ensure environment fields and associated data are in an uninitialised state
+WRITE(umMessage,'(A)') 'Calling clear_environment_fields'
+CALL umPrint(umMessage,src=RoutineName)    
+
 CALL clear_environment_fields()
 
 ! Set flag to show that a valid UKCA configuration is set up
 l_ukca_config_available = .TRUE.
+
+WRITE(umMessage,'(A)') 'About to return from ukca_setup'
+CALL umPrint(umMessage,src=RoutineName)    
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName, zhook_out, zhook_handle)
 RETURN
