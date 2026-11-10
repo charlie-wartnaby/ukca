@@ -609,7 +609,11 @@ DO m=1,jpctr
     n_ox1    = m
   CASE ('O3        ')
     n_o3     = m
+    WRITE(umMessage, '(A,I)') 'advt found O3 at', m
+    CALL umPrint(umMessage,src=RoutineName)
   CASE ('O3S       ')
+    WRITE(umMessage, '(A,I)') 'advt found O3S at', m
+    CALL umPrint(umMessage,src=RoutineName)
     n_o3s    = m
   CASE ('Sx        ')   ! stratospheric ozone tracer
     n_sx     = m
