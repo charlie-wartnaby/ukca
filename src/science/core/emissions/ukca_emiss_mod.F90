@@ -82,6 +82,10 @@ INTEGER, PUBLIC :: inox_light          ! Index for lightning emiss of NOx
 INTEGER, PUBLIC :: ich4_wetl           ! Index for wetland emiss of CH4
 INTEGER, PUBLIC :: ic5h8_ibvoc         ! Index for iBVOC emiss of isoprene
 INTEGER, PUBLIC :: ic10h16_ibvoc       ! Index for iBVOC emiss of monoterpenes
+!+++ JMW
+INTEGER, PUBLIC :: iapinene_ibvoc       ! Index for iBVOC emiss of APINENE
+INTEGER, PUBLIC :: ibpinene_ibvoc       ! Index for iBVOC emiss of BPINENE
+!---
 INTEGER, PUBLIC :: ich3oh_ibvoc        ! Index for iBVOC emiss of methanol
 INTEGER, PUBLIC :: ich3coch3_ibvoc     ! Index for iBVOC emiss of acetone
 INTEGER, PUBLIC :: idms_seaflux        ! Index for marine DMS emissions
@@ -182,6 +186,10 @@ num_onln_em_flds = 0
 ! Initialise indices for interative BVOC emissions
 ic5h8_ibvoc     = -99
 ic10h16_ibvoc   = -99
+!+++ JMW
+iapinene_ibvoc  = -99
+ibpinene_ibvoc  = -99
+!--- JMW
 ich3oh_ibvoc    = -99
 ich3coch3_ibvoc = -99
 
@@ -239,6 +247,34 @@ IF (ukca_config%l_ukca_ibvoc) THEN
                     'ignored for this chemistry scheme'
     CALL ereport('UKCA_EMISS_INIT', ierror, cmessage)
   END IF
+
+!++ JMW addition
+  IF (ANY (em_chem_spec == 'APINENE   ')) THEN
+    iapinene_ibvoc    = num_cdf_em_flds  + num_onln_em_flds + 1
+    num_onln_em_flds = num_onln_em_flds + 1
+    WRITE (umMessage,'(A, I)') 'JMW check iapinene_ibvoc', iapinene_ibvoc
+    CALL umPrint(umMessage,src='ukca_chem_master')
+  ELSE
+    ierror        = -4
+    cmessage      = 'Biogenic emission field of APINENE  '  //                 &
+                    'ignored for this chemistry scheme'
+    CALL ereport('UKCA_EMISS_INIT', ierror, cmessage)
+  END IF
+
+
+  IF (ANY (em_chem_spec == 'BPINENE   ')) THEN
+    ibpinene_ibvoc   = num_cdf_em_flds  + num_onln_em_flds + 1
+    num_onln_em_flds = num_onln_em_flds + 1
+    WRITE (umMessage,'(A, I)') 'JMW check ibpinene_ibvoc', ibpinene_ibvoc
+    CALL umPrint(umMessage,src='ukca_chem_master')
+
+  ELSE
+    ierror        = -5
+    cmessage      = 'Biogenic emission field of BPINENE  '  //                 &
+                    'ignored for this chemistry scheme'
+    CALL ereport('UKCA_EMISS_INIT', ierror, cmessage)
+  END IF
+!-- JMW
 
   ! Methanol and Acetone emissions, although available from JULES are
   ! currently DEACTIVATED (index set to -99). This is due to a lack
@@ -585,6 +621,60 @@ IF (ukca_config%l_ukca_ibvoc) THEN
     emissions(ic10h16_ibvoc)%values(:,:,:) = 0.0
     emissions(ic10h16_ibvoc)%diags (:,:,:) = 0.0
   END IF
+
+!++ JMW
+  IF (iapinene_ibvoc > 0) THEN
+    emissions(iapinene_ibvoc)%var_name    = 'interactive_apinene'
+    emissions(iapinene_ibvoc)%tracer_name = 'APINENE'
+    emissions(iapinene_ibvoc)%l_online    = .TRUE.
+
+    ! iBVOC emissions from JULES are in 'kg(C) m-2 s-1'. Don't indicate this
+    ! in %units but use substring 'expressed as carbon' in %lng_name.
+    emissions(iapinene_ibvoc)%units      = 'kg m-2 s-1'
+    emissions(iapinene_ibvoc)%lng_name   =                                      &
+     'tendency of atmosphere mass content'                               //    &
+     ' of terpenes expressed as carbon due to emission from vegetation'
+
+    emissions(iapinene_ibvoc)%hourly_fact = 'none'      ! No need to apply
+    emissions(iapinene_ibvoc)%daily_fact  = 'none'      ! time profiles
+
+    emissions(iapinene_ibvoc)%vert_fact   = 'surface'   ! surface emissions
+    emissions(iapinene_ibvoc)%three_dim   = .FALSE.
+    emissions(iapinene_ibvoc)%lowest_lev  = 1
+    emissions(iapinene_ibvoc)%highest_lev = 1
+
+    ALLOCATE (emissions(iapinene_ibvoc)%values(row_length, rows, 1))
+    ALLOCATE (emissions(iapinene_ibvoc)%diags (row_length, rows, 1))
+    emissions(iapinene_ibvoc)%values(:,:,:) = 0.0
+    emissions(iapinene_ibvoc)%diags (:,:,:) = 0.0
+  END IF
+
+  IF (ibpinene_ibvoc > 0) THEN
+    emissions(ibpinene_ibvoc)%var_name    = 'interactive_bpinene'
+    emissions(ibpinene_ibvoc)%tracer_name = 'BPINENE'
+    emissions(ibpinene_ibvoc)%l_online    = .TRUE.
+
+    ! iBVOC emissions from JULES are in 'kg(C) m-2 s-1'. Don't indicate this
+    ! in %units but use substring 'expressed as carbon' in %lng_name.
+    emissions(ibpinene_ibvoc)%units      = 'kg m-2 s-1'
+    emissions(ibpinene_ibvoc)%lng_name   =                                      &
+     'tendency of atmosphere mass content'                               //     &
+     ' of terpenes expressed as carbon due to emission from vegetation'
+
+    emissions(ibpinene_ibvoc)%hourly_fact = 'none'      ! No need to apply
+    emissions(ibpinene_ibvoc)%daily_fact  = 'none'      ! time profiles
+
+    emissions(ibpinene_ibvoc)%vert_fact   = 'surface'   ! surface emissions
+    emissions(ibpinene_ibvoc)%three_dim   = .FALSE.
+    emissions(ibpinene_ibvoc)%lowest_lev  = 1
+    emissions(ibpinene_ibvoc)%highest_lev = 1
+
+    ALLOCATE (emissions(ibpinene_ibvoc)%values(row_length, rows, 1))
+    ALLOCATE (emissions(ibpinene_ibvoc)%diags (row_length, rows, 1))
+    emissions(ibpinene_ibvoc)%values(:,:,:) = 0.0
+    emissions(ibpinene_ibvoc)%diags (:,:,:) = 0.0
+  END IF
+!-- JMW
 
   IF (ich3oh_ibvoc > 0) THEN
     emissions(ich3oh_ibvoc)%var_name    = 'interactive_CH3OH'

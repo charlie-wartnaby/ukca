@@ -365,6 +365,8 @@ CHARACTER(LEN=*), PARAMETER :: fldname_ext_ic_flash  =                         &
 ! Interactive biogenic emissions
 CHARACTER(LEN=*), PARAMETER :: fldname_ibvoc_isoprene = 'ibvoc_isoprene'
 CHARACTER(LEN=*), PARAMETER :: fldname_ibvoc_terpene  = 'ibvoc_terpene'
+CHARACTER(LEN=*), PARAMETER :: fldname_ibvoc_apinene  = 'ibvoc_apinene'
+CHARACTER(LEN=*), PARAMETER :: fldname_ibvoc_bpinene  = 'ibvoc_bpinene'
 CHARACTER(LEN=*), PARAMETER :: fldname_ibvoc_methanol = 'ibvoc_methanol'
 CHARACTER(LEN=*), PARAMETER :: fldname_ibvoc_acetone  = 'ibvoc_acetone'
 

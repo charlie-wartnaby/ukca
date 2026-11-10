@@ -177,6 +177,8 @@ USE ukca_fieldname_mod,  ONLY:                                                 &
   fldname_photol_rates,                                                        &
   fldname_ibvoc_isoprene,                                                      &
   fldname_ibvoc_terpene,                                                       &
+  fldname_ibvoc_apinene,                                                       &
+  fldname_ibvoc_bpinene,                                                       &
   fldname_ibvoc_methanol,                                                      &
   fldname_ibvoc_acetone,                                                       &
   fldname_inferno_bc,                                                          &
@@ -328,6 +330,8 @@ USE ukca_environment_fields_mod, ONLY:                                         &
   photol_rates,                                                                &
   ibvoc_isoprene,                                                              &
   ibvoc_terpene,                                                               &
+  ibvoc_apinene,                                                               &
+  ibvoc_bpinene,                                                               &
   ibvoc_methanol,                                                              &
   ibvoc_acetone,                                                               &
   inferno_bc,                                                                  &
@@ -857,6 +861,10 @@ CASE (fldname_ibvoc_isoprene)
   CALL set_field_1d_real(i_field, i1, i2, field_data, ibvoc_isoprene)
 CASE (fldname_ibvoc_terpene)
   CALL set_field_1d_real(i_field, i1, i2, field_data, ibvoc_terpene)
+CASE (fldname_ibvoc_bpinene)
+  CALL set_field_1d_real(i_field, i1, i2, field_data, ibvoc_bpinene)
+CASE (fldname_ibvoc_apinene)
+  CALL set_field_1d_real(i_field, i1, i2, field_data, ibvoc_apinene)
 CASE (fldname_ibvoc_methanol)
   CALL set_field_1d_real(i_field, i1, i2, field_data, ibvoc_methanol)
 CASE (fldname_ibvoc_acetone)

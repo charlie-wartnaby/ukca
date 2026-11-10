@@ -188,6 +188,8 @@ USE ukca_fieldname_mod,  ONLY: maxlen_fieldname,                               &
   fldname_photol_rates,                                                        &
   fldname_ibvoc_isoprene,                                                      &
   fldname_ibvoc_terpene,                                                       &
+  fldname_ibvoc_apinene,                                                       &
+  fldname_ibvoc_bpinene,                                                       &
   fldname_ibvoc_methanol,                                                      &
   fldname_ibvoc_acetone,                                                       &
   fldname_inferno_bc,                                                          &
@@ -1500,6 +1502,18 @@ IF (.NOT. ukca_config%l_ukca_emissions_off) THEN
       IF (ukca_config%l_ukca_ibvoc) THEN
         l_req_emiss = .TRUE.
         use_fldname = fldname_ibvoc_methanol
+      END IF
+
+    CASE ('BPINENE')
+      IF (ukca_config%l_ukca_ibvoc) THEN
+        l_req_emiss = .TRUE.
+        use_fldname = fldname_ibvoc_bpinene
+      END IF
+
+    CASE ('APINENE')
+      IF (ukca_config%l_ukca_ibvoc) THEN
+        l_req_emiss = .TRUE.
+        use_fldname = fldname_ibvoc_apinene
       END IF
 
     CASE ('Me2CO')

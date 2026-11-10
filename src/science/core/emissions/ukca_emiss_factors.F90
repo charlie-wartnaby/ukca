@@ -954,6 +954,11 @@ ELSE IF (TRIM(special_units) == 'expressed_as_carbon'  .OR.                    &
   CASE ('Monoterp')
     ! Convert from kg(C) to kg(C10H16)
     base_scaling = m_monoterp / (10.0 * m_c)
+  CASE ('APINENE')
+    ! Convert from kg(C) to kg(C10H16)
+    base_scaling = m_monoterp / (10.0 * m_c)
+  CASE ('BPINENE')
+    base_scaling = m_monoterp / (10.0 * m_c)
   CASE ('MeOH', 'CH3OH' )
     ! Convert from kg(C) to kg(CH3OH)
     base_scaling = m_ch3oh / m_c

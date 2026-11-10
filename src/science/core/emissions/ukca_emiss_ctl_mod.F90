@@ -64,6 +64,7 @@ USE ukca_emiss_mod,       ONLY: num_em_flds, num_cdf_em_flds, emissions,       &
                                 ukca_emiss_spatial_vars_init,                  &
                                 inox_light, ich4_wetl,                         &
                                 ic5h8_ibvoc, ic10h16_ibvoc,                    &
+                                iapinene_ibvoc,ibpinene_ibvoc,                 &
                                 ich3oh_ibvoc, ich3coch3_ibvoc,                 &
                                 ico_inferno, ich4_inferno,                     &
                                 inox_inferno, iso2_inferno,                    &
@@ -96,6 +97,7 @@ USE ukca_mode_verbose_mod, ONLY: verbose => glob_verbose
 USE ukca_prim_du_mod,     ONLY: ukca_prim_du
 USE ukca_environment_fields_mod, ONLY: ibvoc_isoprene,  ibvoc_terpene,         &
                                  ibvoc_methanol, ibvoc_acetone,                &
+                                 ibvoc_apinene,ibvoc_bpinene,                  &
                                  inferno_bc, inferno_ch4, inferno_co,          &
                                  inferno_nox, inferno_oc, inferno_so2
 USE ukca_constants,       ONLY: m_c, m_ch4, m_dms,                             &
@@ -622,6 +624,29 @@ IF (ukca_config%l_ukca_ibvoc) THEN
     emissions(ic10h16_ibvoc)%values (:,:,1) =                                  &
              emissions(ic10h16_ibvoc)%values (:,:,1) * base_scaling
   END IF
+
+!++ JMW
+  IF (iapinene_ibvoc > 0) THEN
+    emissions(iapinene_ibvoc)%values (:,:,:) = 0.0
+    base_scaling = m_monoterp / (10.0 * m_c)
+    CALL regrid_jules_emi(row_length, rows, land_points, land_index,           &
+                         ibvoc_apinene, land_fraction,                         &
+                         emissions(iapinene_ibvoc)%values (:,:,1))
+    emissions(iapinene_ibvoc)%values (:,:,1) =                                  &
+             emissions(iapinene_ibvoc)%values (:,:,1) * base_scaling
+  END IF
+
+  IF (ibpinene_ibvoc > 0) THEN
+    emissions(ibpinene_ibvoc)%values (:,:,:) = 0.0
+    base_scaling = m_monoterp / (10.0 * m_c)
+    CALL regrid_jules_emi(row_length, rows, land_points, land_index,           &
+                         ibvoc_bpinene, land_fraction,                         &
+                         emissions(ibpinene_ibvoc)%values (:,:,1))
+    emissions(ibpinene_ibvoc)%values (:,:,1) =                                  &
+             emissions(ibpinene_ibvoc)%values (:,:,1) * base_scaling
+  END IF
+
+!-- JMW
 
   IF (ich3oh_ibvoc > 0) THEN
     base_scaling = m_ch3oh / m_c
