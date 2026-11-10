@@ -306,7 +306,7 @@ ELSE IF (ukca_config%l_ukca_strat .OR. ukca_config%l_ukca_strattrop .OR.       &
           ['NO        ','CH4       ','CO        ','HCHO      ',                &
             'C2H6      ','C3H8      ','Me2CO     ','MeCHO     ',               &
             'C5H8      ','MeOH      ','NO_aircrft']
-      n_chem_tracers = 71         ! No chem tracers
+      n_chem_tracers = 72         ! No chem tracers
       nr_therm       = 220        ! thermal reactions
       nr_phot        = 55         ! photolytic (ATA)
 
@@ -327,7 +327,7 @@ ELSE IF (ukca_config%l_ukca_strat .OR. ukca_config%l_ukca_strattrop .OR.       &
       ELSE
         n_aero_tracers = 12
       END IF
-      n_chem_tracers = 71         ! No chem tracers
+      n_chem_tracers = 72         ! No chem tracers
       IF (ukca_config%l_ukca_trophet) THEN
         nr_therm     = 241        ! thermal reactions
       ELSE
@@ -375,12 +375,12 @@ ELSE IF (ukca_config%l_ukca_offline) THEN
 ELSE IF (ukca_config%l_ukca_cristrat) THEN
   IF (.NOT. ukca_config%l_ukca_achem) THEN ! Without aerosol
     IF (ukca_config%i_ukca_chem_version >= 119) THEN  ! CRI-Strat 2 w/o aerosol
-      n_chem_tracers  = 171   ! advected chemical tracers (+9, -4)
+      n_chem_tracers  = 172   ! advected chemical tracers (+9, -4)
       n_aero_tracers  = 0    ! DMS, SO2... aerosol precursor species
       nr_therm        = 625  ! thermal reactions (+45 bimol, +8 termol)
       nr_phot         = 135  ! photolytic reacs
     ELSE  ! CRI-Strat without aerosol
-      n_chem_tracers  = 166    ! advected chemical tracers
+      n_chem_tracers  = 167    ! advected chemical tracers
       n_aero_tracers  = 0    ! DMS, SO2... aerosol precursor species
       nr_therm        = 572  ! thermal reactions
       nr_phot         = 121  ! photolytic reacs
@@ -398,7 +398,7 @@ ELSE IF (ukca_config%l_ukca_cristrat) THEN
         'MeCO2H    ','HOCH2CHO  ','NO_aircrft']
   ELSE ! With aerosol
     IF (ukca_config%i_ukca_chem_version >= 119) THEN  ! CRI-Strat 2 with aerosol
-      n_chem_tracers  = 171   ! advected chemical tracers (+9, -4)
+      n_chem_tracers  = 172   ! advected chemical tracers (+9, -4)
       n_aero_tracers  = 17    ! DMS, SO2... aerosol precursor species
       nr_phot         = 137     ! photolytic reacs
       IF (ukca_config%l_ukca_trophet) THEN
@@ -407,7 +407,7 @@ ELSE IF (ukca_config%l_ukca_cristrat) THEN
         nr_therm      = 646        ! thermal reactions  (+45 bimol, +8 termol)
       END IF
     ELSE ! CRI-Strat with aerosol
-      n_chem_tracers  = 166    ! advected chemical tracers
+      n_chem_tracers  = 167    ! advected chemical tracers
       n_aero_tracers  = 17    ! DMS, SO2... aerosol precursor species
       nr_phot         = 123     ! photolytic reacs
       IF (ukca_config%l_ukca_trophet) THEN

@@ -464,15 +464,9 @@ WRITE(umMessage,'(A,G0,A,G0)') 'Size advt=',SIZE(advt), &
 CALL umPrint(umMessage,src=RoutineName)
 WRITE(umMessage,'(A,G0)') 'About to write c_ru10no3=',c_ru10no3
 CALL umPrint(umMessage,src=RoutineName)
-!WHERE (advt == 'RU10NO3   ') c_species = c_ru10no3
-WHERE (advt == 'RU10NO3   ') c_species = c_ru10no3 ! pasted from dbg out advt
+WHERE (advt == 'RU10NO3   ') c_species = c_ru10no3
 WRITE(umMessage,'(A,G0,A)') 'advt(189)="',advt(189),'"'
 CALL umPrint(umMessage,src=RoutineName)
-WRITE(umMessage,'(A,G0)') 'c_species(189)=',c_species(189)
-CALL umPrint(umMessage,src=RoutineName)
-WRITE(umMessage,'(A)') 'Now writing element 189 explicitly'
-CALL umPrint(umMessage,src=RoutineName)
-c_species(189) = c_ru10no3
 WRITE(umMessage,'(A,G0)') 'c_species(189)=',c_species(189)
 CALL umPrint(umMessage,src=RoutineName)
 
