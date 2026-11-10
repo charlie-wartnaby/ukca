@@ -34,7 +34,7 @@ CONTAINS
 SUBROUTINE ukca_strat_o3_tracer(row_length, rows, model_levels, ntracer,       &
                                 tracer)
 
-USE ukca_tropopause,   ONLY: L_troposphere
+USE ukca_tropopause,   ONLY: L_stratosphere
 USE ukca_cspecies,     ONLY: n_o3, n_o3s
 USE ukca_constants,    ONLY: c_o3
 USE yomhook,           ONLY: lhook, dr_hook
@@ -61,7 +61,7 @@ IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 ! Overwrite values of O3S with O3 in the stratosphere
 
 IF (n_o3s > 0) THEN 
-   WHERE (.NOT. L_troposphere)
+   WHERE (L_stratosphere)
       tracer(:,:,:,n_o3s)   = tracer(:,:,:,n_o3)
    END WHERE
 END IF

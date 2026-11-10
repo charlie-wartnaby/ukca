@@ -214,6 +214,7 @@ USE ukca_chemistry_ctl_tropraq_mod, ONLY: ukca_chemistry_ctl_tropraq
 
 USE ukca_scenario_ctl_mod,  ONLY: ukca_scenario_ctl
 USE ukca_chem_diags_mod,    ONLY: ukca_chem_diags
+USE ukca_strat_o3_tracer_mod, ONLY: ukca_strat_o3_tracer
 USE ukca_chemistry_ctl_mod, ONLY: ukca_chemistry_ctl
 USE ukca_chemistry_ctl_col_mod, ONLY: ukca_chemistry_ctl_col
 USE ukca_chemistry_ctl_full_mod, ONLY: ukca_chemistry_ctl_full
