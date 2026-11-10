@@ -112,6 +112,7 @@ INTEGER, SAVE :: iso3h2o = 0
 INTEGER, SAVE :: ics2oh = 0
 INTEGER, SAVE :: ih2o = 0
 INTEGER, SAVE :: iho2no = 0
+INTEGER, SAVE :: io3sn2 = 0
 INTEGER :: jtr
 INTEGER :: j
 INTEGER :: jr
@@ -144,6 +145,7 @@ REAL :: tmp(1:n_points)
 REAL :: tmp_out(1:n_points)
 REAL :: tmp1(1:n_points)
 REAL :: inv_t(1:n_points)
+REAL :: o3s_rxns(1:n_points)
 
 ! ErrorStatus
 INTEGER                             :: errcode=0   ! Error flag (0 = OK)
@@ -255,6 +257,60 @@ IF (first_pass) THEN
     iho2no    = asad_findreaction( r1, r2, prods, 1, spb, nbrkx,               &
                                    jpbk+1, jpspb )
 
+    ! Search for dummy O3S_PV loss reaction
+    r1 = 'O3S       '
+    r2 = 'N2        '
+    prods(1) = 'N2        '
+    io3sn2 = asad_findreaction( r1, r2, prods, 1, spb, nbrkx,                  &
+                                jpbk+1, jpspb )
+
+    ! O3S loss by OH
+    r1 = 'OH        '
+    r2 = 'O3        '
+    prods(1) = 'HO2       '
+    prods(2) = 'O2        '
+    io3oh = asad_findreaction( r1, r2, prods, 2, spb, nbrkx,                   &
+                               jpbk+1, jpspb )
+
+    ! O3S loss by HO2
+    r1 = 'HO2       '
+    r2 = 'O3        '
+    prods(1) = 'OH        '
+    prods(2) = 'O2        '
+    io3ho2 = asad_findreaction( r1, r2, prods, 2, spb, nbrkx,                  &
+                                jpbk+1, jpspb )
+
+    ! O1D loss by H2O (loss of O3S)
+    r1 = 'O(1D)     '
+    r2 = 'H2O       '
+    prods(1) = 'OH        '
+    prods(2) = 'OH        '
+    io1dh2o = asad_findreaction( r1, r2, prods, 2, spb, nbrkx,                 &
+                                 jpbk+1, jpspb )
+
+    ! O1D loss by N2 (reformation of O3S)
+    r1 = 'O(1D)     '
+    r2 = 'N2        '
+    prods(1) = 'O(3P)     '
+    prods(2) = 'N2        '
+    io1dn2 = asad_findreaction( r1, r2, prods, 2, spb, nbrkx,                  &
+                                jpbk+1, jpspb )
+
+    ! O1D loss by O2 (reformation of O3S)
+    r1 = 'O(1D)     '
+    r2 = 'O2        '
+    prods(1) = 'O(3P)     '
+    prods(2) = 'O2        '
+    io1do2 = asad_findreaction( r1, r2, prods, 2, spb, nbrkx,                  &
+                                jpbk+1, jpspb )
+
+    ! O3 photolysis (loss of O3S)
+    r1 = 'O3        '
+    r2 = 'PHOTON    '
+    prods(1) = 'O(1D)     '
+    prods(2) = 'O2        '
+    ijo1d = asad_findreaction( r1, r2, prods, 2, spj, nprkx,                   &
+                               jppj+1, jpspj )
 
     IF (ukca_config%l_ukca_chem_aero) THEN
       r1 = 'DMS       '
@@ -406,6 +462,19 @@ IF ( iho2no /= 0 ) THEN
   rk(1:n_points,iho2no)=rk(1:n_points,iho2no)*                                 &
    ((530.0*inv_t(1:n_points)) +                                                &
     8.53e-4*(1e-2*p(1:n_points))-1.73)/100.0
+END IF
+
+! Loss rate for O3S tracers
+o3s_rxns = rk(1:n_points,io3oh) * f(1:n_points,ioh) +                          &
+  rk(1:n_points,io3ho2) * f(1:n_points,iho2tr) +                               &
+  rk(1:n_points,ijo1d) * rk(1:n_points,io1dh2o) * wp(1:n_points) / (           &
+  rk(1:n_points,io1dn2) * tnd(1:n_points) * fn2 +                              &
+  rk(1:n_points,io1do2) * tnd(1:n_points) * fo2 +                              &
+  rk(1:n_points,io1dh2o) * wp(1:n_points) )
+
+IF ( io3sn2 /= 0 ) THEN
+  rk(1:n_points,io3sn2) = rk(1:n_points,io3sn2) /                          &
+  ( tnd(1:n_points) * fn2 ) * ( o3s_rxns )
 END IF
 
 ! SO3 + H2O: 2nd H2O molecule dealt with here by multiplying rate by [H2O]

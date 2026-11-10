@@ -236,6 +236,10 @@ END IF
 !       4.  Calculate reaction rate coefficients
 !           --------- -------- ---- ------------
 
+! calculate photolysis rates as required by asad_bimol if using O3S loss
+gphot = .TRUE.
+IF ( gphot ) CALL ukca_photol(prt,n_points)
+
 CALL asad_bimol (n_points)
 CALL asad_trimol(n_points)
 

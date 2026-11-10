@@ -2550,6 +2550,12 @@ IF (ukca_config%l_ukca_chem) THEN
 
   END IF ! do_chemistry
 
+  ! Call routine to overwrite O3S with O3 in the stratosphere
+  IF (n_o3s > 0) THEN
+    CALL ukca_strat_o3_tracer(row_length, rows, model_levels, jpctr,           &
+         all_tracers(1:row_length,1:rows,1:model_levels,1:jpctr))
+  END IF
+  
   IF (n_strat_fluxdiags > 0) THEN
     DO l=1,n_chem_tracers
       DO k=1,model_levels

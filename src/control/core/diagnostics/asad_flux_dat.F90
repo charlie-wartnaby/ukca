@@ -4415,6 +4415,26 @@ TYPE(asad_flux_defn), PARAMETER :: asad_general_interest(8) = [                &
        ['          ','          ','          ','          '])                  &
        ]
 
+TYPE(asad_flux_defn), PARAMETER :: asad_o3s_loss(6) = (/  &
+       asad_flux_defn('RXN',50064,'B',.FALSE.,0,3,                      &
+       (/'O3S       ','N2        '/),                                   &
+       (/'N2        ','          ','          ','          '/)),        &
+       asad_flux_defn('DEP',50065,'D',.FALSE.,0,1,                      &
+       (/'O3S       ','          '/),                                   &
+       (/'          ','          ','          ','          '/)),        &
+       asad_flux_defn('DEP',50066,'W',.FALSE.,0,1,                      &
+       (/'O3S       ','          '/),                                   &
+       (/'          ','          ','          ','          '/)),        &
+       asad_flux_defn('RXN',50067,'B',.TRUE.,0,3,                       &
+       (/'O3S       ','N2        '/),                                   &
+       (/'N2        ','          ','          ','          '/)),        &
+       asad_flux_defn('DEP',50068,'D',.TRUE.,0,1,                       &
+       (/'O3S       ','          '/),                                   &
+       (/'          ','          ','          ','          '/)),        &
+       asad_flux_defn('DEP',50069,'W',.TRUE.,0,1,                       &
+       (/'O3S       ','          '/),                                   &
+       (/'          ','          ','          ','          '/))         &
+       /)
 
 TYPE(asad_flux_defn), PARAMETER :: asad_trop_co_budget(21) = [                 &
 ! CO budget
@@ -8836,6 +8856,7 @@ TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_oxidN_drydep(:)
 TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_oxidN_wetdep(:)
 TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_trop_other_fluxes(:)
 TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_general_interest(:)
+TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_o3s_loss(:)
 TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_trop_co_budget(:)
 TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_lightning_diags(:)
 TYPE(asad_flux_defn), ALLOCATABLE, SAVE :: aa_strat_oh_prod(:)
@@ -8908,6 +8929,9 @@ IF (ukca_config%l_ukca_strattrop) THEN
   ! aa_general_interest
   ALLOCATE(aa_general_interest(SIZE(asad_general_interest)))
   aa_general_interest = asad_general_interest
+  ! aa_o3s_loss
+  ALLOCATE(aa_general_interest(SIZE(asad_general_interest)))
+  aa_o3s_loss = asad_o3s_loss
   ! aa_trop_co_budget
   IF (ukca_config%l_ukca_ro2_perm) THEN
     IF (ukca_config%i_ukca_chem_version >= ichem_version_121) THEN
@@ -9122,6 +9146,9 @@ ELSE IF (ukca_config%l_ukca_cristrat) THEN
   ! aa_general_interest
   ALLOCATE(aa_general_interest(SIZE(asad_general_interest)))
   aa_general_interest = asad_general_interest
+  ! aa_o3s_loss
+  ALLOCATE(aa_o3s_loss(SIZE(asad_o3s_loss)))
+  aa_o3s_loss = asad_o3s_loss
   ! aa_trop_co_budget
   IF (ukca_config%l_ukca_chem_aero) THEN
     IF (ukca_config%i_ukca_chem_version >= ichem_version_119 .AND.             &
@@ -9272,6 +9299,8 @@ IF (ALLOCATED(aa_trop_other_fluxes))                                           &
    n_chemical_fluxes = n_chemical_fluxes + SIZE(aa_trop_other_fluxes)
 IF (ALLOCATED(aa_general_interest))                                            &
    n_chemical_fluxes = n_chemical_fluxes + SIZE(aa_general_interest)
+IF (ALLOCATED(aa_o3s_loss))                                                    &
+   n_chemical_fluxes = n_chemical_fluxes + SIZE(aa_o3s_loss)
 IF (ALLOCATED(aa_trop_co_budget))                                              &
    n_chemical_fluxes = n_chemical_fluxes + SIZE(aa_trop_co_budget)
 IF (ALLOCATED(aa_lightning_diags))                                             &
@@ -9362,6 +9391,11 @@ END IF
 IF (ALLOCATED(aa_general_interest)) THEN
   p2 = p1 + SIZE(aa_general_interest) - 1
   asad_chemical_fluxes(p1:p2) = aa_general_interest(:)
+  p1 = p2 + 1
+END IF
+IF (ALLOCATED(aa_o3s_loss)) THEN
+  p2 = p1 + SIZE(aa_o3s_loss) - 1
+  asad_chemical_fluxes(p1:p2) = aa_o3s_loss(:)
   p1 = p2 + 1
 END IF
 IF (ALLOCATED(aa_trop_co_budget)) THEN
@@ -9522,6 +9556,7 @@ IF (ALLOCATED(aa_strat_oh_prod))         DEALLOCATE(aa_strat_oh_prod)
 IF (ALLOCATED(aa_lightning_diags))       DEALLOCATE(aa_lightning_diags)
 IF (ALLOCATED(aa_trop_co_budget))        DEALLOCATE(aa_trop_co_budget)
 IF (ALLOCATED(aa_general_interest))      DEALLOCATE(aa_general_interest)
+IF (ALLOCATED(aa_o3s_loss))              DEALLOCATE(aa_o3s_loss)
 IF (ALLOCATED(aa_trop_other_fluxes))     DEALLOCATE(aa_trop_other_fluxes)
 IF (ALLOCATED(aa_trop_ox_budget_wetdep)) DEALLOCATE(aa_trop_ox_budget_wetdep)
 IF (ALLOCATED(aa_trop_ox_budget_drydep)) DEALLOCATE(aa_trop_ox_budget_drydep)
