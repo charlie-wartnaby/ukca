@@ -8757,7 +8757,7 @@ DO i=1,jpspec
                 ! can't have two entries at the same version
                 IF (depvel_defs_master(k)%version == last_depvel%version) THEN
                   ierr = 7
-                  WRITE (cmessage,'(A70,I4)')                                  &
+                  WRITE (cmessage,'(A,A)')                                     &
     'Two entries in depvel_defs_master with same item and version numbers.',   &
                     depvel_defs_master(k)%speci
                 END IF
